@@ -1,7 +1,7 @@
 class Solution {
 public:
     int maxDistinctElements(vector<int>& nums, int k) {
-        set<int>st;
+        int count = 0;
         sort(nums.begin(),nums.end());
         int last = INT_MIN;
         for(int i = 0;i<nums.size();i++){
@@ -12,12 +12,12 @@ public:
             }
             if(last < temp){
                 last = temp;
-                st.insert(temp);
+                count++;
                 continue;
             }
             last = last+1;
-            st.insert(last);
+            count++;
         }
-        return st.size();
+        return count;
     }
 };
