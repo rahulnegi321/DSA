@@ -2,10 +2,15 @@ class Solution {
 public:
     int M = 1e9+7;
     long long power(long long x,int n){
-        if(n == 0){
-            return 1;
+         long long result = 1;
+        while (n > 0) {
+            if (n % 2) {
+                result = (result * x) % M;
+            }
+            x = (x * x) % M;
+            n /= 2;
         }
-        return (x * power(x,n-1))%M;
+        return result;
     }
 
     int assignEdgeWeights(vector<vector<int>>& edges) {
