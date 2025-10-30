@@ -1,7 +1,6 @@
 class Solution {
 public:
     int minNumberOperations(vector<int>& target) {
-        int curr = 0;
         int prev = 0;
         int count = 0;
         int n = target.size();
