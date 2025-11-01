@@ -2,12 +2,13 @@ class Solution {
 public:
     bool check(vector<vector<int>>&matrix,int mid,int k){
         int count = 0;
+        int c = matrix[0].size()-1;
+        
         for(int i = 0;i<matrix.size();i++){
-            for(int j = 0;j<matrix[0].size();j++){
-                if(matrix[i][j] <= mid){
-                    count++;
-                }
+            while(c >= 0 && matrix[i][c] > mid){
+                c--;
             }
+            count = count + (c+1);
         }
       if(count >= k){
         return true;
