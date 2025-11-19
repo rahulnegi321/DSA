@@ -1,9 +1,9 @@
 class Solution {
 public:
     int findFinalValue(vector<int>& nums, int original) {
-        unordered_map<int,int>mpp;
+        unordered_set<int>mpp;
         for(int i = 0;i<nums.size();i++){
-            mpp[nums[i]]++;
+            mpp.insert(nums[i]);
         }
         while(1){
             if(mpp.count(original)){
