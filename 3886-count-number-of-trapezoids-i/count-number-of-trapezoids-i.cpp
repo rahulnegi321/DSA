@@ -1,34 +1,27 @@
 class Solution {
 public:
-    long long M = 1e9+7;
-
-    long long comb2(long long n){
-        if(n < 2) return 0;
-        return (n * (n - 1) / 2) % M;
-    }
-
+    int M = 1e9+7;
     int countTrapezoids(vector<vector<int>>& points) {
-        unordered_map<long long,long long> mpp;
-
-        for(auto &p : points){
-            mpp[p[1]]++;
-        }
-
         long long total = 0;
-        for(auto &it : mpp){
-            total = (total + comb2(it.second)) % M;
+        unordered_map<int,int>mpp;
+        for(auto it : points){
+            mpp[it[1]]++;
         }
-
-        long long ans = 0;
-
-        for(auto &it : mpp){
-            long long c = comb2(it.second);
-            if(c == 0) continue;
-
-            total = (total - c + M) % M;
-            ans = (ans + (c * total) % M) % M;
+        for(auto it : mpp){
+            if(it.second < 2){
+                continue;
+            }
+            total = (total + ((it.second)*1LL*(it.second-1)/2)%M)%M;
         }
-
+        int ans = 0;
+        for(auto it : mpp){
+          if(it.second < 2){
+            continue;
+          }
+          int temp = ((it.second)*1LL*(it.second-1)/2)%M;
+          total = total - temp;
+          ans = (ans + (temp*total)%M)%M;
+        }
         return ans;
     }
 };
