@@ -18,7 +18,6 @@ public:
     }
 
     vector<string> findAllConcatenatedWordsInADict(vector<string>& words) {
-        // set<string>st(words.begin(),words.end())
         unordered_map<string,int>mpp;
         for(int i =0;i<words.size();i++){
             mpp[words[i]]++;
