@@ -3,13 +3,7 @@ public:
     int helper(int ind,int ind2,vector<int>&nums1,vector<int>&nums2,vector<vector<vector<int>>>&dp,bool take){
         int n = nums1.size();
         int m = nums2.size();
-        if(ind >= n){
-            if(!take){
-                return INT_MIN;
-            }
-            return 0;
-        }
-        if(ind2 >= m){
+        if(ind >= n || ind2 >= m){
             if(!take){
                 return INT_MIN;
             }
@@ -31,23 +25,5 @@ public:
         int m = nums2.size();
         vector<vector<vector<int>>>dp(n,vector<vector<int>>(m,vector<int>(2,-1)));
         return  helper(0,0,nums1,nums2,dp,false);
-        // if(ans > 0){
-        //     return ans;
-        // }
-        // int one = INT_MAX;
-        // for(int i = 0;i<nums1.size();i++){
-        //     int temp = abs(nums1[i]);
-        //     if(temp < abs(one)){
-        //         one = nums1[i];
-        //     }
-        // }
-        // int two = INT_MAX;
-        // for(int i = 0;i<nums2.size();i++){
-        //     int temp = abs(nums2[i]);
-        //     if(temp < abs(two)){
-        //         two = nums2[i];
-        //     }
-        // }
-        // return one*two;
     }
 };
