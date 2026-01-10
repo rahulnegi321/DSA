@@ -1,57 +1,46 @@
 class Solution {
 public:
-    int helper(string& s,string& p,vector<vector<int>>&dp,int ind,int idx){
+    bool found = false;
+    int helper(int ind,int idx,string& s,string& p,vector<vector<int>>&dp){
+        if(found == true){
+            return dp[ind][idx] = 1;
+        }
         if(ind == s.size() && idx == p.size()){
             return 1;
-        }
-        if(idx >= p.size()){
-            return 0;
+            found = true;
         }
         if(ind >= s.size()){
-            if(idx >= p.size()){
+           for(int i = idx;i<p.size();i++){
+            if(p[i] != '*'){
                 return 0;
             }
-            int find = 1;
-            for(int i = idx;i<p.size();i++){
-                if(p[i] != '*'){
-                    find = 0;
-                }
-            }
-            return find;
+           }
+           return 1;
         }
         if(dp[ind][idx] != -1){
             return dp[ind][idx];
         }
-        int take = 0;
-        if(s[ind] != p[idx] && p[idx] != '?' && p[idx] != '*'){
-            return dp[ind][idx] = 0;
-        }
+        int ans = 0;
         if(s[ind] == p[idx] || p[idx] == '?'){
-            take = helper(s,p,dp,ind+1,idx+1);
+            ans = ans | helper(ind+1,idx+1,s,p,dp);
         }
-        if(p[idx] == '*'){
-            int empty = helper(s,p,dp,ind,idx+1);
-            int lele = helper(s,p,dp,ind+1,idx);
-            take = empty | lele;
+        else if(p[idx] == '*'){
+           ans = ans | helper(ind,idx+1,s,p,dp);
+           ans = ans | helper(ind+1,idx,s,p,dp);
         }
-        return dp[ind][idx] = take;
+        return dp[ind][idx] = ans;
     }
     bool isMatch(string s, string p) {
-     int count = 0;
-      for(int i =0;i<p.size();i++){
-        if(p[i] == '*'){
-            count++;
+        if(s == p){
+            return true;
         }
-      }
-      if(count == 0 && p.size() < s.size()){
+        int n = s.size();
+        int m = p.size();
+        vector<vector<int>>dp(n+1,vector<int>(m+1,-1));
+        int ans = helper(0,0,s,p,dp);
+        if(ans == 1){
+            return true;
+        }
         return false;
-      }
-      int n = s.size();
-      int m = p.size();
-      vector<vector<int>>dp(n,vector<int>(m,-1));
-      if(helper(s,p,dp,0,0) == 1){
-        return true;
-      }
-      return false;
     }
 };
