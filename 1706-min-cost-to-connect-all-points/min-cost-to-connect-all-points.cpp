@@ -4,30 +4,40 @@ public:
         int n = points.size();
         vector<vector<pair<int,int>>>adj(n);
         for(int i = 0;i<points.size();i++){
-            for(int j = i+1;j<points.size();j++){
-                int distance = abs(points[i][0]-points[j][0]) + abs(points[i][1]-points[j][1]);
-                adj[i].push_back({j,distance});
-                adj[j].push_back({i,distance});
+            for(int j = 0;j<points.size();j++){
+                if(i == j){
+                   continue;
+                }
+                int r1 = points[i][0];
+                int c1 = points[i][1];
+                int r2 = points[j][0];
+                int c2 = points[j][1];
+                int dist = abs(r1 - r2) + abs(c1 - c2);
+                adj[i].push_back({j,dist});
+                adj[j].push_back({i,dist});
             }
         }
-        priority_queue<pair<int,int>>q;
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>q;
+        int count = n;
+        q.push({0,0});
         vector<int>vis(n,0);
         int ans = 0;
-        q.push({0,0});
-        while(!q.empty()){
-            int dist = -q.top().first;
+        while(q.size()){
+            int dist = q.top().first;
             int node = q.top().second;
             q.pop();
             if(vis[node]){
                 continue;
             }
-            ans = ans + dist;
             vis[node] = 1;
+            count--;
+            ans += dist;
+            if(count == 0){
+                break;
+            }
             for(auto it : adj[node]){
-                int dis = it.second;
-                int temp = it.first;
-                if(!vis[temp]){
-                    q.push({-dis,temp});
+                if(vis[it.first] == 0){
+                    q.push({it.second,it.first});
                 }
             }
         }
