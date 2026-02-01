@@ -11,20 +11,22 @@
  */
 class Solution {
 public:
-    void preorder(TreeNode* root,priority_queue<int>&q){
-        if(root == nullptr){
+    void solve(TreeNode* root,int& ans,int& count,int k){
+        if(!root){
             return;
         }
-        q.push(root->val);
-        preorder(root->left,q);
-        preorder(root->right,q);
+        solve(root->left,ans,count,k);
+        count++;
+        if(count == k){
+            ans = root->val;
+            return;
+        }
+        solve(root->right,ans,count,k);
     }
     int kthSmallest(TreeNode* root, int k) {
-        priority_queue<int>q;
-        preorder(root,q);
-        while(!q.empty() && q.size() != k){
-            q.pop();
-        }
-        return q.top();
+        int count = 0;
+        int ans;
+        solve(root,ans,count,k);
+        return ans;
     }
 };
