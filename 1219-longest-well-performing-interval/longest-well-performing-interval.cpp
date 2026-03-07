@@ -1,22 +1,34 @@
 class Solution {
 public:
     int longestWPI(vector<int>& hours) {
-        int ans = 0;
+        unordered_map<int,int>mpp;
         int n = hours.size();
-        for(int i = 0;i<hours.size();i++){
-            int count = 0;
-            for(int j = i;j<hours.size();j++){
-              if(hours[j] > 8){
-                count++;
-              }
-              else{
-                count--;
-              }
-
-              if(count > 0){
-                ans = max(ans,j-i+1);
+        mpp[0] = -1;
+        vector<int>temp;
+        for(int i = 0;i<n;i++){
+            if(hours[i] > 8){
+                temp.push_back(1);
             }
+            else{
+                temp.push_back(-1);
             }
+        }
+        int sum = 0;
+        int ans = 0;
+        for(int i = 0;i<n;i++){
+          sum += temp[i];
+          if(sum > 0){
+             ans = i+1;
+          }
+          else{
+            if(mpp.count(sum-1)){
+                ans = max(ans,i-mpp[sum-1]);
+            }
+          }
+          if(mpp.count(sum)){
+            continue;
+          }
+          mpp[sum] = i;
         }
         return ans;
     }
