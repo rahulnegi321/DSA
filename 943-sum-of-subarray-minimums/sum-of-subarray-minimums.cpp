@@ -1,52 +1,52 @@
 class Solution {
 public:
-    int sumSubarrayMins(vector<int>& arr) {
-        int M = 1e9 + 7;
-        stack<pair<int,int>> st;
-        int n = arr.size();
-        vector<int> left(n); 
-        vector<int> right(n); 
 
-    
-        for(int i = 0; i < n; i++){
-            while(!st.empty() && st.top().first >= arr[i]){
+    int sumSubarrayMins(vector<int>& arr) {
+        int M = 1e9+7;
+        stack<int>st;
+        vector<int>next_smaller;
+        int n = arr.size();
+        for(int i = n-1;i>=0;i--){
+            while(st.size() && arr[st.top()] > arr[i]){
+              st.pop();
+            }
+            if(st.empty()){
+                next_smaller.push_back(n);
+            }
+            else{
+                next_smaller.push_back(st.top());
+            }
+            st.push(i);
+        }
+
+        reverse(next_smaller.begin(),next_smaller.end());
+        while(st.size()){
+            st.pop();
+        }            
+
+        vector<int>prev_smaller;
+
+        for(int i = 0;i<n;i++){
+            while(st.size() && arr[st.top()] >= arr[i]){
                 st.pop();
             }
             if(st.empty()){
-                left[i] = -1; 
+                prev_smaller.push_back(-1);
             }
             else{
-                left[i] = st.top().second;
+                 prev_smaller.push_back(st.top());
             }
-            st.push({arr[i], i});
-        }
-
-        stack<pair<int,int>> st1;
-        for(int i = n - 1; i >= 0; i--){
-
-            while(!st1.empty() && st1.top().first > arr[i]){ 
-                st1.pop();
-            }
-            if(st1.empty()){
-                right[i] = n;
-            }
-            else{
-                right[i] = st1.top().second;
-            }
-            st1.push({arr[i], i});
-        }
+            st.push(i);
+        }              
 
         long long ans = 0;
-        for(int i = 0; i < n; i++){
-            long long left_count = (long long)i - left[i]; 
-            long long right_count = (long long)right[i] - i;
-            
-            long long contribution = (arr[i] * left_count) % M;
-            contribution = (contribution * right_count) % M;
-            
-            ans = (ans + contribution) % M;
+
+        for(int i = 0;i<n;i++){
+            int next = next_smaller[i]-1;
+            int last = prev_smaller[i]+1;
+            ans = (ans + (next-i+1)*1LL*(i-last+1)*1LL*arr[i])%M;
         }
-        
-        return (int)ans;
+
+        return ans;
     }
 };
