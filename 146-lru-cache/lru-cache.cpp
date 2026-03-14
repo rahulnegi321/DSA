@@ -4,41 +4,45 @@ public:
     unordered_map<int,pair<list<int>::iterator,int>>mpp;
     int n;
     LRUCache(int capacity) {
-        n = capacity;
+      n = capacity;
     }
     
-    void makerecent(int key){
-        dll.erase(mpp[key].first);
-        dll.push_front(key);
-        mpp[key].first = dll.begin();
-        return;
-    }
-
     int get(int key) {
-        if(!mpp.count(key)){
-            return -1;
-        }
-        makerecent(key);
-        return mpp[key].second;
+        int ans = -1;
+      if(mpp.count(key)){
+         ans = mpp[key].second;
+         auto it = mpp[key].first;
+         dll.erase(it);
+         dll.push_front(key);
+         mpp[key].first = dll.begin();
+      }
+      return ans;
     }
     
     void put(int key, int value) {
         if(mpp.count(key)){
-            makerecent(key);
-            mpp[key].second = value;
-            return;
-        }
-        dll.push_front(key);
-        mpp[key].first = dll.begin();
-        mpp[key].second = value;
-        n--;
-        if(n < 0){
-            int to_delete = dll.back();
-            mpp.erase(to_delete);
+         mpp[key].second = value;
+         auto it = mpp[key].first;
+         dll.erase(it);
+         dll.push_front(key);
+         mpp[key].first = dll.begin();
+      }
+      else{
+         if(dll.size() == n){
+            int k = dll.back();
+            mpp.erase(k);
             dll.pop_back();
-            n++;
-        }
-        return;
+            dll.push_front(key);
+            mpp[key].first = dll.begin();
+            mpp[key].second = value;
+         }
+         else{
+            dll.push_front(key);
+            mpp[key].first = dll.begin();
+            mpp[key].second = value;
+         }
+      }
+      return;
     }
 };
 
