@@ -1,28 +1,29 @@
 class Solution {
 public:
     set<string>result;
-    void helper(int count,int n,string& temp){
-        if(count == 0 && n == 0){
-            result.insert(temp);
+    int N;
+    void helper(int count,int n,string ans){
+        if(count == N && n == 0){
+            result.insert(ans);
             return;
         }
-        if(count > 0){
-            temp += ')';
-            helper(count-1,n-1,temp);
-            temp.pop_back();
+        if(count < N){
+            ans += '(';
+            helper(count+1,n,ans);
+            ans.pop_back();
         }
-        if(count < n){
-            temp += '(';
-            helper(count+1,n,temp);
-            temp.pop_back();
+        if(n != 0 && count > N-n){
+            ans += ')';
+            helper(count,n-1,ans);
+            ans.pop_back();
         }
         return;
     }
     vector<string> generateParenthesis(int n) {
-        int count = 0;
-        string temp = "";
-        helper(0,n,temp);
-        vector<string>ans(result.begin(),result.end());
-        return ans;
+        string ans = "";
+        N = n;
+        helper(0,n,ans);
+        vector<string>finalans(result.begin(),result.end());
+        return finalans;
     }
 };
