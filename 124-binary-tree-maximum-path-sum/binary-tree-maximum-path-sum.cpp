@@ -14,16 +14,18 @@ public:
     int ans = INT_MIN;
     int helper(TreeNode* root){
         if(!root){
-            return -1e4;
+            return 0;
         }
-        int l = helper(root->left);
-        int r = helper(root->right);
-        int maxi = max({l+root->val,r+root->val,root->val,root->val+l+r});
-        int temp = max({l+root->val,r+root->val,root->val});
-        ans = max(ans,maxi);
-        return temp;
+        int left = helper(root->left);
+        int right = helper(root->right);
+        int best =  max({root->val,root->val + left,root->val+right});
+        ans = max({best,ans,root->val + left + right});
+        return best;
     }
     int maxPathSum(TreeNode* root) {
+        if(!root){
+            return 0;
+        }
         helper(root);
         return ans;
     }
