@@ -1,7 +1,7 @@
 class Solution {
 public:
     int numberOfSubmatrices(vector<vector<char>>& grid) {
-        unordered_map<char,int>mpp;
+       
         int n = grid.size();
         int m = grid[0].size();
         int count = 0;
