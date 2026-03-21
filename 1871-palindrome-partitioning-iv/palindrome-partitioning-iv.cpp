@@ -1,17 +1,19 @@
 class Solution {
 public:
     int ispalindrome(int left,int right,string &s,vector<vector<int>>&dp){
-        if(dp[left][right] != -1){
-            return dp[left][right];
+        if(left == right){
+            return dp[left][right] = 1;
         }
-        int l = left;
-        int r = right;
-        while(left <= right){
-            if(s[left++] != s[right--]){
-                return dp[l][r] = 0;
-            }
+        if(right-left == 1 && s[left]==s[right]){
+            return dp[left][right] = 1;
         }
-        return dp[l][r] = 1;
+        if(s[left]==s[right] && dp[left+1][right-1] == 1){
+            return dp[left][right] = 1;
+        }
+        else if(s[left] == s[right] && dp[left+1][right-1] == -1){
+            return dp[left][right] = ispalindrome(left+1,right-1,s,dp);
+        }
+        return dp[left][right] = 0;
     }
     int helper(int ind,int count,string &s,vector<vector<int>>&dp,vector<vector<int>>&dp2){
         if(count == 3 && ind == s.size()){
