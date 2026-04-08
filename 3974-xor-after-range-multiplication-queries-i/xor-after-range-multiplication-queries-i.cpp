@@ -1,20 +1,22 @@
 class Solution {
 public:
-    int M = 1e9+7;
     int xorAfterQueries(vector<int>& nums, vector<vector<int>>& queries) {
-        for(auto it : queries ){
-            int idx = it[0];
-            int r = it[1];
-            int v = it[3];
-            int k = it[2];
-            while(idx <= r){
-                nums[idx] = (nums[idx]*1LL*v)%M;
-                idx += k;
+        int n = nums.size();
+        int M = 1e9+7;
+        for(auto &q : queries){
+            int start = q[0];
+            int end = q[1];
+            int step = q[2];
+            int val = q[3];
+            while(start < n && start <= end){
+                long long temp = (nums[start]*1LL*val)%M;
+                nums[start] = (int)temp;
+                start += step;
             }
         }
         int xr = 0;
         for(auto it : nums){
-            xr = xr^it;
+            xr ^= it;
         }
         return xr;
     }
