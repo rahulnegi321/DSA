@@ -7,15 +7,14 @@ public:
         if(dp[ind] != -1){
             return dp[ind];
         }
-        int take = 0;
-        int nottake = 0;
-        take = nums[ind] + helper(ind+2,nums,dp);
-        nottake = helper(ind+1,nums,dp);
+        int take = nums[ind] + helper(ind+2,nums,dp);
+        int nottake = helper(ind+1,nums,dp);
         return dp[ind] = max(take,nottake);
     }
     int rob(vector<int>& nums) {
-       int n = nums.size();
-       vector<int>dp(n,-1);
-       return helper(0,nums,dp);
+        int n = nums.size();
+        vector<int>dp(n,-1);
+        int ans =  helper(0,nums,dp);
+        return ans;
     }
 };
